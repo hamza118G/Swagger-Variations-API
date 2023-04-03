@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 85px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            white-space: nowrap;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 15px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+
+        #getText {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 15px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+
+        .material-icons {
+            padding-bottom: 3px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 100px;
+
+
+        }
+
+        #getText11{
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 15px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #getText2 {
+            font-size: 20px;
+            color: #818181;
+        }
+
+        #getText2:hover {
+            color: #111;
+        }
+
+
+        @media screen and (max-height: 450px) {
+            .sidebar {
+                padding-top: 15px;
+            }
+
+            .sidebar a {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test">
+        <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+            <div>
+                <a href="#" onmouseenter="getValue() ; this.onmouseenter=null;"><span><i
+                            class="material-icons">info</i><span class="icon-text">&nbsp;&nbsp;&nbsp;&nbsp;Parent
+                            Data</span></a>
+
+                           
+                        </div>
+
+                <div>
+                    <li id="getText"></li>
+                    
+                </div>
+
+                <a href="#" onmouseenter="getValue2() ; this.onmouseenter=null;"><span><i
+                    class="material-icons">info</i><span class="icon-text">&nbsp;&nbsp;&nbsp;&nbsp;Variations
+                    Data</span></a>
+                    <div>
+                <li id="getText11"></li>
+        </div>
+    </div>
+        <div id="main">
+            <h1>API Child Data</h1>
+            <p id="getText2"></p>
+            <p id="getText12"></p>
+           
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        var mini = true;
+
+        function toggleSidebar() {
+            if (mini) {
+                document.getElementById("mySidebar").style.width = "200px";
+                document.getElementById("main").style.marginLeft = "200px";
+                document.getElementById("getText").style.display = "block"
+
+                this.mini = false;
+            } else {
+                document.getElementById("mySidebar").style.width = "85px";
+                document.getElementById("main").style.marginLeft = "85px";
+                document.getElementById("getText").style.display = "none"
+                this.mini = true;
+            }
+        }
+    </script>
+
+
+    <script>
+        var getValue = async () => {
+            var response = await fetch(
+                'https://3d73-81-19-209-53.eu.ngrok.io/api/EcommerceProduct/GetProductCategories',
+               
+                    
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "ngrok-skip-browser-warning": "69420",
+                    },
+                }
+            );
+            data = await response.json();
+            console.log("data", data)
+
+
+            data.forEach(test => {
+                if (test.ParentId == null) {
+                    let ParentNullList = document.getElementById("getText");
+                    console.log("PArentNullList", ParentNullList);
+
+
+
+                    ParentNullList.insertAdjacentHTML('beforeend',
+                        `<li  href="#" onclick="clickedsomething(this)"   data-id="${test.Id}"> ${test.Name}</li> <br>`
+
+                    );
+                }
+
+
+
+
+            })
+
+
+        }
+
+        function clickedsomething(ele) {
+
+            let TestAPI = (ele.getAttribute('data-id'))
+
+            let ChildList = document.getElementById("getText2")
+
+            ChildList.innerHTML = " ";
+
+            console.log("TestApiId:", TestAPI)
+            data.forEach(test => {
+                if (test.ParentId == TestAPI) {
+
+
+
+
+                    // getText2.replaceChildren();
+
+                    // getText2.replaceWith = "main ";
+
+                    console.log(ChildList)
+
+                    ChildList.insertAdjacentHTML('beforeend', ` ${test.Name}<br> `)
+
+
+
+                } else {
+
+                    // getText2.innerHTML = " ";
+                    // $('#getText2').empty();
+                    // $("#getText2").empty().append();
+
+                }
+
+
+
+
+
+
+            })
+
+
+
+
+        }
+
+
+
+
+      
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+ 
+ <!-- VariationAPI -->
+<script>
+      var getValue2 = async () => {
+            var response = await fetch(
+                'https://3d73-81-19-209-53.eu.ngrok.io/api/EcommerceProduct/GetProductVariations',
+               
+                    
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "ngrok-skip-browser-warning": "69420",
+                    },
+                }
+            );
+            data = await response.json();
+            console.log("data", data)
+
+           
+            let uniqueChars = [];
+data.forEach((tests) => {
+    if (!uniqueChars.includes(tests.AttributeName)) {
+        uniqueChars.push(tests.AttributeName);
+        console.log(uniqueChars);
+
+        let VariationNameList = document.getElementById("getText11");
+                    console.log("VARIATION-NAME-List", VariationNameList);
+
+                    VariationNameList.insertAdjacentHTML('beforeend',
+                        `<li  href="#" onclick="clickedsomethings(this)"   data-id="${tests.Id}"> ${tests.AttributeName}</li> <br>`
+
+                    );
+    }
+});
+
+
+     
+
+
+
+
+                                
+            
+
+            
+          
+                
+            }
+            function clickedsomethings(ele) {
+
+let VariationAPI = (ele.getAttribute('data-id'))
+
+let VariationsLists = document.getElementById("getText2")
+
+VariationsLists.innerHTML = " ";
+
+
+let uniqueChars = []
+data.map(tests => {
+    if (  tests.AttributeId == VariationAPI ) {
+        
+        
+        console.log("VariationId:", VariationAPI)
+
+        console.log(VariationsLists)
+
+        
+        VariationsLists.insertAdjacentHTML('beforeend', ` ${tests.Name}<br> `)
+
+
+
+    } 
+
+
+
+
+
+
+})
+
+
+
+
+}
+
+
+
+
+        
+
+
+
+        
+
+
+        
+
+        
+        
+        
+
+
+                
+                
+
+</script>
+</body>
+
+</html>~
